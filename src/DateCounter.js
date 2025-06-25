@@ -1,6 +1,8 @@
 import { type } from "@testing-library/user-event/dist/type";
 import { useReducer } from "react";
 
+const initialState = { count: 0, step: 1 };
+
 function reducer(state, action) {
   switch (action.type) {
     case "dec":
@@ -14,6 +16,8 @@ function reducer(state, action) {
 
     case "setStep":
       return { ...state, step: action.payload };
+    case "reset":
+      return initialState;
 
     default:
       throw new Error("unkwon action");
@@ -21,7 +25,6 @@ function reducer(state, action) {
 }
 
 function DateCounter() {
-  const initialState = { count: 0, step: 1 };
   const [state, disPatch] = useReducer(reducer, initialState);
   const { count, step } = state;
 
@@ -44,7 +47,9 @@ function DateCounter() {
     disPatch({ type: "setStep", payload: Number(e.target.value) });
   };
 
-  const reset = function () {};
+  const reset = function () {
+    disPatch({ type: "reset" });
+  };
 
   return (
     <div className="counter">
