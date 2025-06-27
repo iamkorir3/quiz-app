@@ -3,12 +3,13 @@ import Header from "./Header";
 import Main from "./Main";
 import Loader from "./Loader";
 import Error from "./Error";
-import startScreen from "./startScreen";
-import { type } from "@testing-library/user-event/dist/type";
+import Questions from "./Questions";
+import StartScreen from "./startScreen";
 
 const initialstate = {
   questions: [],
-  status: "ready",
+  status: "loading",
+  index: 2,
 };
 
 function reducer(state, action) {
@@ -19,18 +20,30 @@ function reducer(state, action) {
         questions: action.payload,
         status: "ready",
       };
+
     case "dataFailed":
       return {
         ...state,
         statu: "error",
       };
+
+    case "start":
+      return {
+        ...state,
+        status: "active",
+      };
+
     default:
       throw new Error("Action unknown");
   }
 }
 
 export default function App() {
-  const [{ questions, status }, dispatch] = useReducer(reducer, initialstate);
+  const [{ questions, status, index }, dispatch] = useReducer(
+    reducer,
+    initialstate
+  );
+  const numQuestions = questions.length;
 
   useEffect(function () {
     fetch("http://localhost:8000/questions")
@@ -39,13 +52,18 @@ export default function App() {
       .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
 
+  console.log(questions[4]);
+
   return (
     <div className="app">
       <Header />
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {status === "ready" && <startScreen />}
+        {status === "ready" && (
+          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+        )}
+        {status === "active" && <Questions question={questions[index]} />}
       </Main>
     </div>
   );
