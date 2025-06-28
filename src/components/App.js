@@ -34,6 +34,12 @@ function reducer(state, action) {
         status: "active",
       };
 
+    case "newAnswer":
+      return {
+        ...state,
+        answer: action.payload,
+      };
+
     default:
       throw new Error("Action unknown");
   }
@@ -65,7 +71,11 @@ export default function App() {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {status === "active" && (
-          <Questions question={questions[index]} dispatch={dispatch} />
+          <Questions
+            question={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
         )}
       </Main>
     </div>
