@@ -10,6 +10,7 @@ const initialstate = {
   questions: [],
   status: "loading",
   index: 2,
+  answer: null,
 };
 
 function reducer(state, action) {
@@ -39,7 +40,7 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{ questions, status, index }, dispatch] = useReducer(
+  const [{ questions, status, index, answer }, dispatch] = useReducer(
     reducer,
     initialstate
   );
@@ -52,7 +53,7 @@ export default function App() {
       .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
 
-  console.log(questions[4]);
+  // console.log(questions[4]);
 
   return (
     <div className="app">
@@ -63,7 +64,9 @@ export default function App() {
         {status === "ready" && (
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
-        {status === "active" && <Questions question={questions[index]} />}
+        {status === "active" && (
+          <Questions question={questions[index]} dispatch={dispatch} />
+        )}
       </Main>
     </div>
   );
