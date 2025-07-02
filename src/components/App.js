@@ -10,7 +10,7 @@ import StartScreen from "./startScreen";
 const initialstate = {
   questions: [],
   status: "loading",
-  index: 2,
+  index: 0,
   answer: null,
 };
 
@@ -42,14 +42,16 @@ function reducer(state, action) {
         answer: action.payload,
         points:
           action.payload === question.correctOption
-            ? state.points + 1
+            ? state.points + 10
             : state.points,
       };
 
     case "nextQuestion":
+      console.log("reacg");
       return {
         ...state,
         index: state.index + 1,
+        answer: null,
       };
 
     default:
