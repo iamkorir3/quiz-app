@@ -7,6 +7,7 @@ import NextButton from "./NextButton";
 import Questions from "./Questions";
 import Progress from "./Progress";
 import StartScreen from "./startScreen";
+import FinishedScreen from "./FinishedScreen";
 
 const initialstate = {
   questions: [],
@@ -71,7 +72,6 @@ export default function App() {
     (prev, cur) => prev + cur.points,
     0
   );
-  console.log(maxPossiblePints);
 
   useEffect(function () {
     fetch("http://localhost:8000/questions")
@@ -99,6 +99,7 @@ export default function App() {
               index={index}
               maxPossiblePints={maxPossiblePints}
               numQuestions={numQuestions}
+              answer={answer}
             />
             <Questions
               question={questions[index]}
@@ -107,6 +108,9 @@ export default function App() {
             />
             <NextButton dispatch={dispatch} answer={answer} />
           </>
+        )}
+        {status === "finished" && (
+          <FinishedScreen points={points} maxPossiblePints={maxPossiblePints} />
         )}
       </Main>
     </div>
