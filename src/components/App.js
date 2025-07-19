@@ -94,8 +94,6 @@ export default function App() {
       .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
 
-  // console.log(questions[4]);
-
   return (
     <div className="app">
       <Header />
