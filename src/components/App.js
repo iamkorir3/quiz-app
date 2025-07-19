@@ -11,6 +11,7 @@ import FinishedScreen from "./FinishedScreen";
 import Timer from "./Timer";
 import Footer from "./Footer";
 
+const SECS_PER_QUIZ = 30;
 const initialstate = {
   questions: [],
   status: "loading",
@@ -18,6 +19,7 @@ const initialstate = {
   points: 0,
   answer: null,
   highscore: 0,
+  secondsRemaining: null,
 };
 
 function reducer(state, action) {
@@ -39,6 +41,7 @@ function reducer(state, action) {
       return {
         ...state,
         status: "active",
+        secondsRemaining: state.questions.length * SECS_PER_QUIZ,
       };
 
     case "newAnswer":
@@ -75,14 +78,23 @@ function reducer(state, action) {
         status: "ready",
       };
 
+    case "tick":
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining === 0 ? "finished" : state.status,
+      };
+
     default:
       throw new Error("Action unknown");
   }
 }
 
 export default function App() {
-  const [{ questions, status, index, answer, points, highscore }, dispatch] =
-    useReducer(reducer, initialstate);
+  const [
+    { questions, secondsRemaining, status, index, answer, points, highscore },
+    dispatch,
+  ] = useReducer(reducer, initialstate);
   const numQuestions = questions.length;
   const maxPossiblePints = questions.reduce(
     (prev, cur) => prev + cur.points,
@@ -121,7 +133,7 @@ export default function App() {
               answer={answer}
             />
             <Footer>
-              <Timer />
+              <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
               <NextButton
                 dispatch={dispatch}
                 index={index}
