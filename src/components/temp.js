@@ -63,6 +63,22 @@ function reducer(state, action) {
         answer: null,
       };
 
+    case "nextQuestion":
+      console.log("reached");
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
+      };
+
+    case "finish":
+      return {
+        ...state,
+        status: "finished",
+        highscore:
+          state.points > state.highscore ? state.points : state.highscore,
+      };
+
     case "finish":
       return {
         ...state,
