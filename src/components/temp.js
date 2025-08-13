@@ -63,23 +63,7 @@ function reducer(state, action) {
         answer: null,
       };
 
-    case "temp":
-      console.log("reached");
-      return {
-        ...state,
-        index: state.index + 1,
-        answer: null,
-      };
-
     case "finish":
-      return {
-        ...state,
-        status: "finished",
-        highscore:
-          state.points > state.highscore ? state.points : state.highscore,
-      };
-
-    case "temps":
       return {
         ...state,
         status: "finished",
@@ -92,6 +76,14 @@ function reducer(state, action) {
         ...initialstate,
         questions: state.questions,
         status: "ready",
+      };
+
+    case "t3emp":
+      console.log("reached");
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
       };
 
     case "tick":
