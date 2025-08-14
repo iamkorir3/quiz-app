@@ -78,14 +78,6 @@ function reducer(state, action) {
         status: "ready",
       };
 
-    case "t3emp":
-      console.log("reached");
-      return {
-        ...state,
-        index: state.index + 1,
-        answer: null,
-      };
-
     case "tick":
       return {
         ...state,
